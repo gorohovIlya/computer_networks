@@ -84,9 +84,12 @@ class RSAKeyGenerator:
         self.__calculate_euler()
         while True:
             candidate = random.randrange(2, self.__euler)
-            if self.are_numbers_coprime(candidate, self.__euler):
-                self.__pub_exp = candidate
-                return
+            if not self.are_numbers_coprime(candidate, self.__euler):
+                continue
+            if (candidate * candidate) % self.__euler == 1:
+                continue
+            self.__pub_exp = candidate
+            return
 
     def __generate_private_key(self):
         if self.__pub_exp == 0:
